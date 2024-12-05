@@ -12,32 +12,27 @@ const defaultFormData = {
 function App() {
   const categories = ["HTML", "CSS", "JS"];
 
-  const [articles, setArticles] = useState([
-    {
-      title: "Articolo 1",
-      content: "Lorem ipsum dolor sit amet",
-      img: "https://placehold.co/600x400",
-      author: "Alessandro Fiora",
-      category: "HTML",
-      published: true,
-    },
-    {
-      title: "Articolo 2",
-      content: "Lorem ipsum dolor sit amet",
-      img: "https://placehold.co/600x400",
-      author: "Alessandro Fiora",
-      category: "CSS",
-      published: false,
-    },
-    {
-      title: "Articolo 3",
-      content: "Lorem ipsum dolor sit amet",
-      img: "https://placehold.co/600x400",
-      author: "Alessandro Fiora",
-      category: "JS",
-      published: false,
-    },
-  ]);
+  const [articles, setArticles] = useState([]);
+
+  // ^ BLUEPRINT ARTICOLO
+  // {
+  //   title: "Articolo 1",
+  //   content: "Lorem ipsum dolor sit amet",
+  //   img: "https://placehold.co/600x400",
+  //   author: "Alessandro Fiora",
+  //   category: "HTML",
+  //   published: true,
+  // },
+
+  // ^ INDEX
+  const fetchArticles = () => {
+    fetch("http://localhost:3000/posts")
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data.filteredPosts);
+        setArticles(data.filteredPosts);
+      });
+  };
 
   const [formData, setFormData] = useState(defaultFormData);
 
@@ -54,24 +49,14 @@ function App() {
   const handleFormSubmit = (e) => {
     e.preventDefault();
 
-    const newArticles = [
-      ...articles,
-      {
-        title: formData.title,
-        content: formData.content,
-        img: formData.img,
-        author: formData.author,
-        category: formData.category,
-        published: formData.published,
-      },
-    ];
+    const newArticles = [...articles, { ...formData }];
     setArticles(newArticles);
     setFormData(defaultFormData);
   };
 
   useEffect(() => {
-    alert("Modifica stato di pubblicazione");
-  }, [formData.published]);
+    fetchArticles();
+  }, []);
 
   const handleDeleteButtonClick = (index) => {
     const newArticles = [...articles];
