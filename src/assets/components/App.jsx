@@ -50,12 +50,11 @@ function App() {
   const fetchDestroyArticle = (id) => {
     fetch("http://localhost:3000/posts/" + id, {
       method: "DELETE",
-      // headers: { "Content-Type": "application/json" },
-      // body: JSON.stringify(formData),
+      headers: { "Content-Type": "application/json" },
     })
-      .then((res) => res.json())
+      .then((res) => res)
       .then((data) => {
-        console.log(data);
+        fetchArticles();
       });
   };
 
@@ -74,10 +73,6 @@ function App() {
   const handleFormSubmit = (e) => {
     e.preventDefault();
     fetchStoreArticle();
-
-    // const newArticles = [...articles, { ...formData }];
-    // setArticles(newArticles);
-    // setFormData(defaultFormData);
   };
 
   useEffect(() => {
