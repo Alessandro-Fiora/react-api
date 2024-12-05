@@ -9,6 +9,8 @@ const defaultFormData = {
   published: false,
 };
 
+const customApiUrl = "http://localhost:3000/posts/";
+
 function App() {
   const categories = ["HTML", "CSS", "JS"];
 
@@ -26,7 +28,7 @@ function App() {
 
   // ^ INDEX
   const fetchArticles = () => {
-    fetch("http://localhost:3000/posts")
+    fetch(customApiUrl)
       .then((res) => res.json())
       .then((data) => {
         setArticles(data.filteredPosts);
@@ -35,7 +37,7 @@ function App() {
 
   // ^ STORE
   const fetchStoreArticle = () => {
-    fetch("http://localhost:3000/posts", {
+    fetch(customApiUrl, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(formData),
@@ -48,7 +50,7 @@ function App() {
 
   // ^ DESTROY
   const fetchDestroyArticle = (id) => {
-    fetch("http://localhost:3000/posts/" + id, {
+    fetch(customApiUrl + id, {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
     })
@@ -78,12 +80,6 @@ function App() {
   useEffect(() => {
     fetchArticles();
   }, []);
-
-  const handleDeleteButtonClick = (index) => {
-    const newArticles = [...articles];
-    newArticles.splice(index, 1);
-    setArticles(newArticles);
-  };
 
   return (
     <>
