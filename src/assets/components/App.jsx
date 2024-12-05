@@ -29,8 +29,33 @@ function App() {
     fetch("http://localhost:3000/posts")
       .then((res) => res.json())
       .then((data) => {
-        console.log(data.filteredPosts);
         setArticles(data.filteredPosts);
+      });
+  };
+
+  // ^ STORE
+  const fetchStoreArticle = () => {
+    fetch("http://localhost:3000/posts", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setArticles(data);
+      });
+  };
+
+  // ^ DESTROY
+  const fetchDestroyArticle = (id) => {
+    fetch("http://localhost:3000/posts/" + id, {
+      method: "DELETE",
+      // headers: { "Content-Type": "application/json" },
+      // body: JSON.stringify(formData),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
       });
   };
 
@@ -48,10 +73,11 @@ function App() {
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
+    fetchStoreArticle();
 
-    const newArticles = [...articles, { ...formData }];
-    setArticles(newArticles);
-    setFormData(defaultFormData);
+    // const newArticles = [...articles, { ...formData }];
+    // setArticles(newArticles);
+    // setFormData(defaultFormData);
   };
 
   useEffect(() => {
@@ -208,7 +234,7 @@ function App() {
                       <div className="article-buttons">
                         <button
                           onClick={() => {
-                            handleDeleteButtonClick(index);
+                            fetchDestroyArticle(article.id);
                           }}
                           className="btn p-0"
                         >
